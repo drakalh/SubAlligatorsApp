@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,12 +41,13 @@ class MainPageActivity : ComponentActivity() {
         val mgr = getSystemService(this.applicationContext, ConnectivityManager::class.java)
         val network = mgr?.activeNetwork
 
-        val conn = network!!.openConnection(URL("http://dev-restandroid.users.info.unicaen.fr/REST/"))
+        val conn = network!!.openConnection(URL("http://dev-restandroid.users.info.unicaen.fr/REST/aptitude/"))
         conn.setRequestProperty("Content-Type", "application/json")
 
-        val flow = conn.getOutputStream();
+        val flow = conn.getInputStream();
 
-
+        Text(text = "Test")
+        Text(text = flow.toString())
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
