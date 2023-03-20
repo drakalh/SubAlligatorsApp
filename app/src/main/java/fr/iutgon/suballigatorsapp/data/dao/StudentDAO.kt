@@ -17,4 +17,22 @@ interface StudentDAO {
 
     @Query("SELECT * FROM Student")
     fun getAll(): Cursor
+
+    @Query("SELECT * FROM Student WHERE id = :id")
+    fun getById(id: Int): Cursor
+
+    @Query("SELECT * FROM Student WHERE name = :name")
+    fun getByName(name: String): Cursor
+
+    @Query("SELECT * FROM Student WHERE formationid = :formationid")
+    fun getByFormationId(formationid: Int): Cursor
+
+    @Query("SELECT * FROM Student WHERE phone = :phone")
+    fun getByPhone(phone: String): Cursor
+
+    @Query("SELECT * FROM Student WHERE deleted = 0")
+    fun getNotDeleted(): Cursor
+
+    @Query("SELECT * FROM Student WHERE deleted = 1")
+    fun getDeleted(): Cursor
 }

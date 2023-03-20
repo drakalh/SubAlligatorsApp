@@ -1,19 +1,17 @@
-package fr.iutgon.suballigatorsapp.entities
+package fr.iutgon.suballigatorsapp.data.entities
 
+import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-class Skill
+class Level
 {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     var id: Int = 0
 
     var name: String = ""
 
     var deleted: Boolean = false
-
-    var levelId: Int = 0
-
 }

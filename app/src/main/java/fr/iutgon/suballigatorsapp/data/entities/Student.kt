@@ -9,15 +9,11 @@ class Student {
     @PrimaryKey
     var id: Int = 0
 
-    @ColumnInfo(name = "lastname")
-    var lastname: String = ""
+    var name: String = ""
 
-    @ColumnInfo(name = "firstname")
-    var firstname: String = ""
-
-    @ColumnInfo(name = "formationId")
     var formationId: Int = 0
 
-    @ColumnInfo(name = "studentDeleted")
-    var studentDeleted: Int = 0
+    var phone: String = ""
+
+    var deleted: Boolean = false
 }

@@ -17,4 +17,16 @@ interface InitiatorDAO {
 
     @Query("SELECT * FROM Initiator")
     fun getAll(): Cursor
+
+    @Query("SELECT * FROM Initiator WHERE id = :id")
+    fun getById(id: Int): Cursor
+
+    @Query("SELECT * FROM Initiator WHERE name = :name")
+    fun getByName(name: String): Cursor
+
+    @Query("SELECT * FROM Initiator WHERE mail = :mail and password = :password")
+    fun getByMailAndPassword(mail: String, password: String): Cursor
+
+    @Query("SELECT * FROM Initiator WHERE levelid = :levelid")
+    fun getByLevelId(levelid: Int): Cursor
 }

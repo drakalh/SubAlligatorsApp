@@ -17,4 +17,19 @@ interface SessionDAO {
 
     @Query("SELECT * FROM session")
     fun getAll(): Cursor
+
+    @Query("SELECT * FROM session WHERE id = :id")
+    fun getById(id: Int): Cursor
+
+    @Query("SELECT * FROM session WHERE formationid = :formationid")
+    fun getByFormationId(formationid: Int): Cursor
+
+    @Query("SELECT * FROM session WHERE date = :date")
+    fun getByDate(date: String): Cursor
+
+    @Query("SELECT * FROM session WHERE deleted = 0")
+    fun getNotDeleted(): Cursor
+
+    @Query("SELECT * FROM session WHERE deleted = 1")
+    fun getDeleted(): Cursor
 }
