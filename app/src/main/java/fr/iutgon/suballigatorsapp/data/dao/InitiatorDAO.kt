@@ -1,8 +1,7 @@
-package fr.iutgon.suballigatorsapp.dao
+package fr.iutgon.suballigatorsapp.data.dao
 
-import android.database.Cursor
 import androidx.room.*
-import fr.iutgon.suballigatorsapp.entities.Initiator
+import fr.iutgon.suballigatorsapp.data.entities.Initiator
 
 @Dao
 interface InitiatorDAO {
@@ -16,17 +15,17 @@ interface InitiatorDAO {
     fun update(vararg initiator: Initiator)
 
     @Query("SELECT * FROM Initiator")
-    fun getAll(): Cursor
+    fun getAll(): List<Initiator>
 
     @Query("SELECT * FROM Initiator WHERE id = :id")
-    fun getById(id: Int): Cursor
+    fun getById(id: Int): Initiator
 
     @Query("SELECT * FROM Initiator WHERE name = :name")
-    fun getByName(name: String): Cursor
+    fun getByName(name: String): Initiator
 
-    @Query("SELECT * FROM Initiator WHERE mail = :mail and password = :password")
-    fun getByMailAndPassword(mail: String, password: String): Cursor
+    @Query("SELECT * FROM Initiator WHERE email = :email and password = :password")
+    fun getByEmailAndPassword(email: String, password: String): Initiator
 
-    @Query("SELECT * FROM Initiator WHERE levelid = :levelid")
-    fun getByLevelId(levelid: Int): Cursor
+    @Query("SELECT * FROM Initiator WHERE levelId = :levelId")
+    fun getByLevelId(levelId: Int): List<Initiator>
 }

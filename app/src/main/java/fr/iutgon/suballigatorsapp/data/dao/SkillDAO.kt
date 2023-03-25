@@ -1,13 +1,11 @@
 package fr.iutgon.suballigatorsapp.data.dao
 
-import android.database.Cursor
 import androidx.room.*
-import fr.iutgon.suballigatorsapp.entities.Skill
+import fr.iutgon.suballigatorsapp.data.entities.Skill
 
-@Entity
+@Dao
 interface SkillDAO
 {
-
     @Insert
     fun insertSkill(vararg skill: Skill)
 
@@ -18,21 +16,20 @@ interface SkillDAO
     fun updateSkill(vararg skill: Skill)
 
     @Query("SELECT * FROM Skill")
-    fun getAll(): Cursor
+    fun getAll(): List<Skill>
 
     @Query("SELECT * FROM Skill WHERE id = :id")
-    fun getById(id: Int): Cursor
+    fun getById(id: Int): Skill
 
     @Query("SELECT * FROM Skill WHERE name = :name")
-    fun getByName(name: String): Cursor
+    fun getByName(name: String): Skill
 
     @Query("SELECT * FROM Skill WHERE levelid = :levelid")
-    fun getByLevelId(levelid: Int): Cursor
+    fun getByLevelId(levelid: Int): List<Skill>
 
     @Query("SELECT * FROM Skill WHERE deleted = 0")
-    fun getNotDeleted(): Cursor
+    fun getNotDeleted(): List<Skill>
 
     @Query("SELECT * FROM Skill WHERE deleted = 1")
-    fun getDeleted(): Cursor
-
+    fun getDeleted(): List<Skill>
 }

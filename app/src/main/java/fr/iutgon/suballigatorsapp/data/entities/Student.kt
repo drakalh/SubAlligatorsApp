@@ -1,4 +1,4 @@
-package fr.iutgon.suballigatorsapp.entities
+package fr.iutgon.suballigatorsapp.data.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

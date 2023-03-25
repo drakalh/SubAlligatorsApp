@@ -1,12 +1,12 @@
 package fr.iutgon.suballigatorsapp
 
-import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -17,28 +17,34 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.content.ContextCompat.getSystemService
+import fr.iutgon.suballigatorsapp.data.AppBDD
+import fr.iutgon.suballigatorsapp.data.entities.Aptitude
 import fr.iutgon.suballigatorsapp.ui.theme.SuballigatorsappTheme
-import fr.iutgon.suballigatorsapp.views.UrlViewModel
-import java.io.OutputStream
-import java.net.HttpURLConnection
-import java.net.URL
+import fr.iutgon.suballigatorsapp.views.BddViewModel
+import fr.iutgon.suballigatorsapp.views.DataLoaderViewModel
 
 class MainPageActivity : ComponentActivity() {
     companion object {
-        lateinit var test: MutableState<String>
+        lateinit var bdd: MutableState<AppBDD>
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val t = AppBDD.getInstance(applicationContext)
+
+        val dataView = DataLoaderViewModel(t)
+        /*for (s in AppBDD.getTable()) {
+            dataView.getDataFromTable(s)
+        }*/
+
+        dataView.getDataFromTable("aptitude")
+
         setContent {
-            test = remember {
-                mutableStateOf("No data")
-            }
+            bdd = remember { mutableStateOf(t) }
 
             SuballigatorsappTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
@@ -49,34 +55,38 @@ class MainPageActivity : ComponentActivity() {
         }
     }
 
+    @Composable
+    fun AptitudeTab() {
+        val test = remember { mutableListOf<Aptitude>() }
+
+        BddViewModel(bdd.value).getAptitudes(test)
+
+        Column() {
+            Row() {
+                Text("id")
+                Text("nom")
+                Text("skillId")
+                Text("deleted")
+            }
+        }
+
+        for (aptitude in test) {
+            Column() {
+                Row() {
+                    Text(aptitude.id.toString())
+                    Text(aptitude.name)
+                    Text(aptitude.skillId.toString())
+                    Text(aptitude.deleted.toString())
+                }
+            }
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.M)
     @Composable
     fun Greeting() {
-        val mgr = getSystemService(this.applicationContext, ConnectivityManager::class.java)
-
         Column {
-            Text(test.value)
-
-            if (mgr != null) {
-                Text("MGR ok")
-                val network = mgr.activeNetwork
-
-                if (network != null) {
-                    val urlViewModel = UrlViewModel()
-                    urlViewModel.execURL("https://dev-restandroid.users.info.unicaen.fr/REST/aptitude/", test)
-                } else {
-                    Text("Pas de network.")
-                }
-
-                //
-
-                //conn.setRequestProperty("Accept", "application/json")
-                //conn.connect()
-
-                // val flow = conn.getInputStream();
-            } else {
-                Text("Pas de connection.")
-            }
+            AptitudeTab()
         }
     }
 

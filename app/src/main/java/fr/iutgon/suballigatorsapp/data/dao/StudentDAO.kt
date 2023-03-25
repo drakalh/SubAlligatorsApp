@@ -1,8 +1,7 @@
-package fr.iutgon.suballigatorsapp.dao
+package fr.iutgon.suballigatorsapp.data.dao
 
-import android.database.Cursor
 import androidx.room.*
-import fr.iutgon.suballigatorsapp.entities.Student
+import fr.iutgon.suballigatorsapp.data.entities.Student
 
 @Dao
 interface StudentDAO {
@@ -16,23 +15,23 @@ interface StudentDAO {
     fun update(vararg student: Student)
 
     @Query("SELECT * FROM Student")
-    fun getAll(): Cursor
+    fun getAll(): List<Student>
 
     @Query("SELECT * FROM Student WHERE id = :id")
-    fun getById(id: Int): Cursor
+    fun getById(id: Int): Student
 
     @Query("SELECT * FROM Student WHERE name = :name")
-    fun getByName(name: String): Cursor
+    fun getByName(name: String): Student
 
     @Query("SELECT * FROM Student WHERE formationid = :formationid")
-    fun getByFormationId(formationid: Int): Cursor
+    fun getByFormationId(formationid: Int): List<Student>
 
     @Query("SELECT * FROM Student WHERE phone = :phone")
-    fun getByPhone(phone: String): Cursor
+    fun getByPhone(phone: String): Student
 
     @Query("SELECT * FROM Student WHERE deleted = 0")
-    fun getNotDeleted(): Cursor
+    fun getNotDeleted(): List<Student>
 
     @Query("SELECT * FROM Student WHERE deleted = 1")
-    fun getDeleted(): Cursor
+    fun getDeleted(): List<Student>
 }

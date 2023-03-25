@@ -1,8 +1,7 @@
-package fr.iutgon.suballigatorsapp.dao
+package fr.iutgon.suballigatorsapp.data.dao
 
-import android.database.Cursor
 import androidx.room.*
-import fr.iutgon.suballigatorsapp.entities.Formation
+import fr.iutgon.suballigatorsapp.data.entities.Formation
 
 @Dao
 interface FormationDAO {
@@ -16,21 +15,21 @@ interface FormationDAO {
     fun update(vararg formation: Formation)
 
     @Query("SELECT * FROM Formation")
-    fun getAll(): Cursor
+    fun getAll(): List<Formation>
 
     @Query("SELECT * FROM Formation WHERE id = :id")
-    fun getById(id: Int): Cursor
+    fun getById(id: Int): Formation
 
     @Query("SELECT * FROM Formation WHERE name = :name")
-    fun getByName(name: String): Cursor
+    fun getByName(name: String): Formation
 
-    @Query("SELECT * FROM Formation WHERE levelid = :levelid")
-    fun getByLevelId(levelid: Int): Cursor
+    @Query("SELECT * FROM Formation WHERE levelId = :levelId")
+    fun getByLevelId(levelId: Int): List<Formation>
 
     @Query("SELECT * FROM Formation WHERE deleted = 0")
-    fun getNotDeleted(): Cursor
+    fun getNotDeleted(): List<Formation>
 
     @Query("SELECT * FROM Formation WHERE deleted = 1")
-    fun getDeleted(): Cursor
+    fun getDeleted(): List<Formation>
 
 }

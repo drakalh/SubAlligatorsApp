@@ -1,4 +1,4 @@
-package fr.iutgon.suballigatorsapp.entities
+package fr.iutgon.suballigatorsapp.data.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -6,7 +6,6 @@ import androidx.room.PrimaryKey
 @Entity
 class Skill
 {
-
     @PrimaryKey
     var id: Int = 0
 
@@ -15,5 +14,4 @@ class Skill
     var deleted: Boolean = false
 
     var levelId: Int = 0
-
 }

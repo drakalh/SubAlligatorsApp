@@ -1,8 +1,8 @@
-package fr.iutgon.suballigatorsapp.dao
+package fr.iutgon.suballigatorsapp.data.dao
 
 import android.database.Cursor
 import androidx.room.*
-import fr.iutgon.suballigatorsapp.entities.Session
+import fr.iutgon.suballigatorsapp.data.entities.Session
 
 @Dao
 interface SessionDAO {
@@ -15,21 +15,21 @@ interface SessionDAO {
     @Update
     fun update(vararg session: Session)
 
-    @Query("SELECT * FROM session")
-    fun getAll(): Cursor
+    @Query("SELECT * FROM Session")
+    fun getAll(): List<Session>
 
-    @Query("SELECT * FROM session WHERE id = :id")
-    fun getById(id: Int): Cursor
+    @Query("SELECT * FROM Session WHERE id = :id")
+    fun getById(id: Int): Session
 
-    @Query("SELECT * FROM session WHERE formationid = :formationid")
-    fun getByFormationId(formationid: Int): Cursor
+    @Query("SELECT * FROM Session WHERE formationid = :formationid")
+    fun getByFormationId(formationid: Int): List<Session>
 
-    @Query("SELECT * FROM session WHERE date = :date")
-    fun getByDate(date: String): Cursor
+    @Query("SELECT * FROM Session WHERE date = :date")
+    fun getByDate(date: String): List<Session>
 
-    @Query("SELECT * FROM session WHERE deleted = 0")
-    fun getNotDeleted(): Cursor
+    @Query("SELECT * FROM Session WHERE deleted = 0")
+    fun getNotDeleted(): List<Session>
 
-    @Query("SELECT * FROM session WHERE deleted = 1")
-    fun getDeleted(): Cursor
+    @Query("SELECT * FROM Session WHERE deleted = 1")
+    fun getDeleted(): List<Session>
 }

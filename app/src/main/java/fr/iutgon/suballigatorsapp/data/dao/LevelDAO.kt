@@ -1,13 +1,11 @@
 package fr.iutgon.suballigatorsapp.data.dao
 
-import android.database.Cursor
 import androidx.room.*
-import java.util.logging.Level
+import fr.iutgon.suballigatorsapp.data.entities.Level
 
-@Entity
+@Dao
 interface LevelDAO
 {
-
     @Insert
     fun insertLevel(vararg level: Level)
 
@@ -18,18 +16,17 @@ interface LevelDAO
     fun updateLevel(vararg level: Level)
 
     @Query("SELECT * FROM Level")
-    fun getAll(): Cursor
+    fun getAll(): List<Level>
 
     @Query("SELECT * FROM Level WHERE id = :id")
-    fun getById(id: Int): Cursor
+    fun getById(id: Int): Level
 
     @Query("SELECT * FROM Level WHERE name = :name")
-    fun getByName(name: String): Cursor
+    fun getByName(name: String): Level
 
     @Query("SELECT * FROM Level WHERE deleted = 0")
-    fun getNotDeleted(): Cursor
+    fun getNotDeleted(): List<Level>
 
     @Query("SELECT * FROM Level WHERE deleted = 1")
-    fun getDeleted(): Cursor
-
+    fun getDeleted(): List<Level>
 }
