@@ -7,13 +7,13 @@ import fr.iutgon.suballigatorsapp.data.entities.Level
 interface LevelDAO
 {
     @Insert
-    fun insertLevel(vararg level: Level)
+    fun insert(vararg level: Level)
 
     @Delete
-    fun deleteLevel(vararg level: Level)
+    fun delete(vararg level: Level)
 
     @Update
-    fun updateLevel(vararg level: Level)
+    fun update(vararg level: Level)
 
     @Query("SELECT * FROM Level")
     fun getAll(): List<Level>

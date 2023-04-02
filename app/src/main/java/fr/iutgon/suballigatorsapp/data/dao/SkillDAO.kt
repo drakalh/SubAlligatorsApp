@@ -7,13 +7,13 @@ import fr.iutgon.suballigatorsapp.data.entities.Skill
 interface SkillDAO
 {
     @Insert
-    fun insertSkill(vararg skill: Skill)
+    fun insert(vararg skill: Skill)
 
     @Delete
-    fun deleteSkill(vararg skill: Skill)
+    fun delete(vararg skill: Skill)
 
     @Update
-    fun updateSkill(vararg skill: Skill)
+    fun update(vararg skill: Skill)
 
     @Query("SELECT * FROM Skill")
     fun getAll(): List<Skill>

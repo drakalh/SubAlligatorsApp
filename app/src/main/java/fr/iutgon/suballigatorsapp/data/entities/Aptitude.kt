@@ -1,20 +1,17 @@
 package fr.iutgon.suballigatorsapp.data.entities
 
-import androidx.annotation.NonNull
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import org.json.JSONException
 import org.json.JSONObject
 
 @Entity
-class Aptitude
-{
+class Aptitude {
     companion object {
-        fun getFromJSON(json: JSONObject): Aptitude? {
-            val aptitude = Aptitude()
-
+        fun getAptitudeFromJSON(json: JSONObject): Aptitude? {
             return try {
+                val aptitude = Aptitude()
+
                 aptitude.id = json.getInt("id")
                 aptitude.name = json.getString("name")
                 aptitude.skillId = json.getInt("skillId")

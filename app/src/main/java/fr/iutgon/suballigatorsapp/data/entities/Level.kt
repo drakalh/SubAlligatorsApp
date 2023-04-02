@@ -1,22 +1,24 @@
 package fr.iutgon.suballigatorsapp.data.entities
 
-import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import org.json.JSONException
 import org.json.JSONObject
 
 @Entity
-class Level
-{
+class Level {
     companion object {
-        fun getFromJSON(json: JSONObject): Level {
-            val level = Level()
+        fun getLevelFromJSON(json: JSONObject): Level? {
+            return try {
+                val level = Level()
 
-            level.id = json.getInt("id")
-            level.name = json.getString("name")
-            level.deleted = json.getBoolean("deleted")
+                level.id = json.getInt("id")
+                level.deleted = json.getBoolean("deleted")
 
-            return level
+                level
+            } catch (e: JSONException) {
+                null
+            }
         }
     }
 

@@ -1,7 +1,6 @@
 package fr.iutgon.suballigatorsapp.data
 
 import android.content.Context
-import android.database.sqlite.SQLiteConstraintException
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -14,7 +13,7 @@ import fr.iutgon.suballigatorsapp.data.dao.LevelDAO
 import fr.iutgon.suballigatorsapp.data.dao.SkillDAO
 import fr.iutgon.suballigatorsapp.data.dao.StatusDAO
 import fr.iutgon.suballigatorsapp.data.entities.*
-import org.json.JSONObject
+import org.json.JSONArray
 
 @Database(
     entities = [
@@ -52,37 +51,23 @@ abstract class AppBDD : RoomDatabase() {
             return instance!!
         }
 
-        fun getTable(): ArrayList<String> {
-            val al = ArrayList<String>()
-            al.add("aptitude")
-            al.add("formation")
-            al.add("initiator")
-            al.add("level")
-            al.add("session")
-            al.add("skill")
-            al.add("status")
-            al.add("student")
-            return al
+        fun getEntities(): Array<String> {
+            return arrayOf(
+                "student",
+                "initiator",
+                "formation",
+                "session",
+                "aptitude",
+                "skill",
+                "status",
+                "level"
+            )
         }
     }
 
-    fun insertDataFromJSON(table: String, JSONData: JSONObject) {
-        when (table) {
-            "aptitude" -> {
-                val a = Aptitude.getFromJSON(JSONData)
+    fun setDataFromJSON(dataName: String, JSONData: JSONArray) {
+        if (getEntities().contains(dataName)) {
 
-                if (a != null) {
-                    try {
-                        aptitudeDAO().insert(a)
-                    } catch (_: SQLiteConstraintException) {
-
-                    }
-                }
-            }
-
-            else -> {
-
-            }
         }
     }
 }

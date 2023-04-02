@@ -1,4 +1,11 @@
 <resources>
-    <string name="app_name">suballigatorsapp</string>
-    <string name="title_activity_main_page">MainPageActivity</string>
+    <string name="app_name">SubAlligator\'s Loyalty</string>
+    <string name="logo">Logo</string>
+    <string name="liste_des_formation">Liste des formation</string>
+    <string name="mon_profil">Mon profil</string>
+    <string name="progression_formation">Progression formation</string>
+    <string name="evaluation_s_ance">Evaluation séance</string>
+    <string name="connexion">Connexion</string>
+    <string name="email">Email</string>
+    <string name="mot_de_passe">Mot de passe</string>
 </resources>

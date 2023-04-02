@@ -7,13 +7,13 @@ import fr.iutgon.suballigatorsapp.data.entities.Status
 interface StatusDAO
 {
     @Insert
-    fun insertStatus(vararg status: Status)
+    fun insert(vararg status: Status)
 
     @Delete
-    fun deleteStatus(vararg status: Status)
+    fun delete(vararg status: Status)
 
     @Update
-    fun updateStatus(vararg status: Status)
+    fun update(vararg status: Status)
 
     @Query("SELECT * FROM Status")
     fun getAll(): List<Status>
