@@ -1,6 +1,7 @@
 package fr.iutgon.suballigatorsapp.data
 
 import android.content.Context
+import androidx.compose.runtime.MutableState
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -30,7 +31,7 @@ import org.json.JSONObject
 
     version = 1
 )
-abstract class AppBDD : RoomDatabase() {
+abstract class AppBDD : RoomDatabase(), MutableState<AppBDD> {
     abstract fun aptitudeDAO(): AptitudeDAO
     abstract fun studentDAO(): StudentDAO
     abstract fun initiatorDAO(): InitiatorDAO

@@ -29,4 +29,7 @@ interface AptitudeDAO
 
     @Query("SELECT * FROM Aptitude WHERE deleted = 1")
     fun getDeleted(): List<Aptitude>
+
+    @Query("SELECT * FROM Aptitude WHERE skillId = :skillId")
+    fun getBySkillId(skillId: Int): List<Aptitude>
 }

@@ -16,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import fr.iutgon.suballigatorsapp.data.AppBDD
 import fr.iutgon.suballigatorsapp.data.LoggedInUser
 import fr.iutgon.suballigatorsapp.views.DataLoaderViewModel
@@ -81,6 +82,7 @@ class ProfileActivity : ComponentActivity() {
     }
 
     @Composable
+    @Preview
     fun Page() {
         Column() {
             Text("Nom : ", color = Color.White)
