@@ -1,15 +1,19 @@
 package fr.iutgon.suballigatorsapp.views
 
-import androidx.lifecycle.*
+import android.content.Context
+import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import fr.iutgon.suballigatorsapp.data.AppBDD
 import fr.iutgon.suballigatorsapp.data.LoggedInUser
-import fr.iutgon.suballigatorsapp.data.entities.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.InputStreamReader
+import java.io.*
+import java.lang.System.err
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -22,7 +26,6 @@ class DataLoaderViewModel(private val bdd: AppBDD) : ViewModel() {
             val urlConnection = urlObj.openConnection() as? HttpURLConnection
 
             if (urlConnection != null) {
-
                 urlConnection.connect()
 
                 if (urlConnection.responseCode == 200) {
@@ -44,54 +47,87 @@ class DataLoaderViewModel(private val bdd: AppBDD) : ViewModel() {
         }
     }
 
-    fun loadData(dataName: String): MutableLiveData<List<JSONObject>> {
-        val data = MutableLiveData<List<JSONObject>>()
+    fun loadData(appContext: Context): MutableLiveData<Boolean> {
+        val data = MutableLiveData<Boolean>()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val dataURL = "$baseURL/$dataName/"
-            val json = getJSONFromURL(dataURL)
-            val list = ArrayList<JSONObject>()
+            for (dataName in AppBDD.getEntities()) {
+                val dataURL = "$baseURL/$dataName/"
+                val json = getJSONFromURL(dataURL)
 
-            if (json != null) {
-                val array = JSONArray(json)
-
-                for (i in 0 until array.length()) {
-                    list.add(array.getJSONObject(i))
+                if (json != null) {
+                    val array = JSONArray(json)
+                    bdd.setDataFromJSON(dataName, array)
+                } else {
+                    println("no data")
                 }
-            } else {
-                println("no data")
+
+                println("Chargement $dataName")
             }
 
-            data.postValue(list)
+            data.postValue(true)
         }
 
         return data
     }
 
-    fun login(email: String, password: String, owner: LifecycleOwner): MutableLiveData<Boolean> {
+    fun modifyProfile(id: Int, dataName: String, dataContent: String): MutableLiveData<Boolean> {
         val data = MutableLiveData<Boolean>()
 
-        viewModelScope.launch {
-            loadData("initiator").observe(owner) {
-                var t = false
+        viewModelScope.launch(Dispatchers.IO) {
+            val urlObj = URL("$baseURL/initiator/")
 
-                for (i in it) {
-                    val initiator = Initiator.getInitiatorFromJSON(i)
-                    if (initiator != null) {
-                        if (initiator.email == email && initiator.password == password) {
-                            val user = LoggedInUser.getInstance()
-                            user.initiator = initiator
-                            user.set = true
-                            t = true
-                        }
+            try {
+                val urlConnection = urlObj.openConnection() as? HttpURLConnection
+
+                val jsonObj = JSONObject()
+                jsonObj.put("id", id)
+                jsonObj.put(dataName, dataContent)
+
+                if (urlConnection != null) {
+                    urlConnection.requestMethod = "PUT";
+                    val out = BufferedOutputStream(urlConnection.outputStream);
+                    val writer = BufferedWriter(OutputStreamWriter(out, "UTF-8"))
+
+                    writer.write(jsonObj.toString())
+                    writer.flush()
+                    writer.close()
+                    out.close()
+
+                    urlConnection.connect()
+
+                    if (urlConnection.responseCode == 200) {
+                        data.postValue(true)
+                    } else {
+                        data.postValue(false)
                     }
                 }
+            } catch (e: Exception) {
+                err.println(e)
+            }
+        }
 
-                if (!t) {
-                    data.postValue(false)
-                } else {
-                    data.postValue(true)
-                }
+        return data
+    }
+
+    fun login(email: String, password: String): MutableLiveData<Boolean> {
+        val data = MutableLiveData<Boolean>()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            var t = false
+
+            val initiator = bdd.initiatorDAO().getByEmailAndPassword(email, password)
+
+            if (initiator.email == email && initiator.password == password) {
+                val user = LoggedInUser.getInstance()
+                user.initiator = initiator
+                t = true
+            }
+
+            if (!t) {
+                data.postValue(false)
+            } else {
+                data.postValue(true)
             }
         }
 

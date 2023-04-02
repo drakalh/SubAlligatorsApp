@@ -14,6 +14,7 @@ import fr.iutgon.suballigatorsapp.data.dao.SkillDAO
 import fr.iutgon.suballigatorsapp.data.dao.StatusDAO
 import fr.iutgon.suballigatorsapp.data.entities.*
 import org.json.JSONArray
+import org.json.JSONObject
 
 @Database(
     entities = [
@@ -53,11 +54,11 @@ abstract class AppBDD : RoomDatabase() {
 
         fun getEntities(): Array<String> {
             return arrayOf(
+                "aptitude",
                 "student",
                 "initiator",
                 "formation",
                 "session",
-                "aptitude",
                 "skill",
                 "status",
                 "level"
@@ -67,7 +68,65 @@ abstract class AppBDD : RoomDatabase() {
 
     fun setDataFromJSON(dataName: String, JSONData: JSONArray) {
         if (getEntities().contains(dataName)) {
-
+            for (i in 0 until JSONData.length()) {
+                val jsonObj = JSONData.get(i) as JSONObject
+                try {
+                    when (dataName) {
+                        "aptitude" -> {
+                            aptitudeDAO().insert(Aptitude.getAptitudeFromJSON(jsonObj)!!)
+                        }
+                        "formation" -> {
+                            formationDAO().insert(Formation.getFormationFromJSON(jsonObj)!!)
+                        }
+                        "initiator" -> {
+                            initiatorDAO().insert(Initiator.getInitiatorFromJSON(jsonObj)!!)
+                        }
+                        "level" -> {
+                            levelDAO().insert(Level.getLevelFromJSON(jsonObj)!!)
+                        }
+                        "session" -> {
+                            sessionDAO().insert(Session.getSessionFromJSON(jsonObj)!!)
+                        }
+                        "skill" -> {
+                            skillDAO().insert(Skill.getSkillFromJSON(jsonObj)!!)
+                        }
+                        "status" -> {
+                            statusDAO().insert(Status.getStatusFromJSON(jsonObj)!!)
+                        }
+                        "student" -> {
+                            studentDAO().insert(Student.getStudentFromJSON(jsonObj)!!)
+                        }
+                    }
+                } catch (e: Exception) {
+                    println(e)
+                    when (dataName) {
+                        "aptitude" -> {
+                            aptitudeDAO().update(Aptitude.getAptitudeFromJSON(jsonObj)!!)
+                        }
+                        "formation" -> {
+                            formationDAO().update(Formation.getFormationFromJSON(jsonObj)!!)
+                        }
+                        "initiator" -> {
+                            initiatorDAO().update(Initiator.getInitiatorFromJSON(jsonObj)!!)
+                        }
+                        "level" -> {
+                            levelDAO().update(Level.getLevelFromJSON(jsonObj)!!)
+                        }
+                        "session" -> {
+                            sessionDAO().update(Session.getSessionFromJSON(jsonObj)!!)
+                        }
+                        "skill" -> {
+                            skillDAO().update(Skill.getSkillFromJSON(jsonObj)!!)
+                        }
+                        "status" -> {
+                            statusDAO().update(Status.getStatusFromJSON(jsonObj)!!)
+                        }
+                        "student" -> {
+                            studentDAO().update(Student.getStudentFromJSON(jsonObj)!!)
+                        }
+                    }
+                }
+            }
         }
     }
 }

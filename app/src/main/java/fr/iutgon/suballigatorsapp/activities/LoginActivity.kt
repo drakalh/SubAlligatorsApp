@@ -21,7 +21,7 @@ class LoginActivity : AppCompatActivity() {
         val emailAddress = findViewById<EditText>(R.id.editTextTextEmailAddress).text.toString()
         val password = findViewById<EditText>(R.id.editTextTextPassword).text.toString()
 
-        DataLoaderViewModel(AppBDD.getInstance(applicationContext)).login(emailAddress, password, this).observe(this) {
+        DataLoaderViewModel(AppBDD.getInstance(applicationContext)).login(emailAddress, password).observe(this) {
             if (it) {
                 startActivity(Intent(this, MainActivity::class.java))
             } else {

@@ -3,8 +3,7 @@ package fr.iutgon.suballigatorsapp.data
 import fr.iutgon.suballigatorsapp.data.entities.Initiator
 
 class LoggedInUser {
-    lateinit var initiator: Initiator
-    var set = false
+    var initiator: Initiator? = null
 
     companion object {
         private var instance: LoggedInUser? = null

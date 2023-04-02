@@ -17,9 +17,11 @@ class StartupActivity : AppCompatActivity() {
         supportActionBar?.hide()
         setContentView(R.layout.activity_startup)
 
-        DataLoaderViewModel(bdd).loadData("aptitude").observe(this) {
-            if (it.isNotEmpty()) {
-                if (!LoggedInUser.getInstance().set) {
+        val view = DataLoaderViewModel(bdd)
+
+        view.loadData(applicationContext).observe(this) {
+            if (it) {
+                if (LoggedInUser.getInstance().initiator == null) {
                     startActivity(Intent(this, LoginActivity::class.java))
                 } else {
                     startActivity(Intent(this, MainActivity::class.java))

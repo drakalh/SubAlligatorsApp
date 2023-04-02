@@ -15,12 +15,19 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import fr.iutgon.suballigatorsapp.data.AppBDD
 import fr.iutgon.suballigatorsapp.data.LoggedInUser
+import fr.iutgon.suballigatorsapp.views.DataLoaderViewModel
 
 class ProfileActivity : ComponentActivity() {
     companion object {
+        val user = LoggedInUser.getInstance()
         lateinit var modify: MutableState<Boolean>
-        lateinit var values: MutableList<String>
+        lateinit var name: MutableState<String>
+        lateinit var email: MutableState<String>
+        lateinit var password: MutableState<String>
+        lateinit var password2: MutableState<String>
     }
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -28,9 +35,13 @@ class ProfileActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val user = LoggedInUser.getInstance()!!
+            val user = LoggedInUser.getInstance()
+
             modify = remember { mutableStateOf(false) }
-            values = remember { mutableListOf(user.initiator.name, user.initiator.email, "", "") }
+            name = remember { mutableStateOf(user.initiator!!.name) }
+            email = remember { mutableStateOf(user.initiator!!.email) }
+            password = remember { mutableStateOf("") }
+            password2 = remember { mutableStateOf("") }
 
             Column() {
                 Scaffold(
@@ -73,16 +84,36 @@ class ProfileActivity : ComponentActivity() {
     fun Page() {
         Column() {
             Text("Nom : ", color = Color.White)
-            TextField(value = values[0], onValueChange = { values[0] = it }, enabled = modify.value)
+            TextField(
+                value = name.value,
+                onValueChange = { value -> name.value = value },
+                enabled = modify.value,
+                textStyle = TextStyle(color = Color(0xffffffff))
+            )
 
             Text("Email : ", color = Color.White)
-            TextField(value = values[1], onValueChange = { values[1] = it }, enabled = modify.value)
+            TextField(
+                value = email.value,
+                onValueChange = { value -> email.value = value },
+                enabled = modify.value,
+                textStyle = TextStyle(color = Color(0xffffffff))
+            )
 
             Text("Mot de passe : ", color = Color.White)
-            TextField(value = values[2], onValueChange = { values[2] = it }, enabled = modify.value)
+            TextField(
+                value = password.value,
+                onValueChange = { value -> password.value = value },
+                enabled = modify.value,
+                textStyle = TextStyle(color = Color(0xffffffff))
+            )
 
             Text("Mot de passe (2e fois) : ", color = Color.White)
-            TextField(value = values[3], onValueChange = { values[3] = it }, enabled = modify.value)
+            TextField(
+                value = password2.value,
+                onValueChange = { value -> password2.value = value },
+                enabled = modify.value,
+                textStyle = TextStyle(color = Color(0xffffffff))
+            )
 
             Button(onClick = { modifyProfile() }, enabled = modify.value) {
                 Text(text = "Modifier")
@@ -91,10 +122,49 @@ class ProfileActivity : ComponentActivity() {
     }
 
     private fun modifyProfile() {
-        if (values[2] == values[3]) {
+        if (password.value == password2.value && password.value.isNotEmpty()) {
+            val viewModel = DataLoaderViewModel(AppBDD.getInstance(applicationContext))
+            viewModel.modifyProfile(user.initiator!!.id, "email", email.value).observe(this) {
+                if (it) {
+                    Toast.makeText(
+                        applicationContext,
+                        "Email modifié.",
+                        Toast.LENGTH_SHORT
+                    ).show()
 
+                    user.initiator!!.email = email.value
+                } else {
+                    Toast.makeText(
+                        applicationContext,
+                        "Impossible de modifier l'email.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            viewModel.modifyProfile(user.initiator!!.id, "name", name.value).observe(this) {
+                if (it) {
+                    Toast.makeText(
+                        applicationContext,
+                        "Nom modifié.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    user.initiator!!.name = name.value
+                } else {
+                    Toast.makeText(
+                        applicationContext,
+                        "Impossible de modifier l'nom.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         } else {
-            Toast.makeText(applicationContext, "Les mots de passe ne correspondent pas.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                applicationContext,
+                "Les mots de passe ne correspondent pas.",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }
